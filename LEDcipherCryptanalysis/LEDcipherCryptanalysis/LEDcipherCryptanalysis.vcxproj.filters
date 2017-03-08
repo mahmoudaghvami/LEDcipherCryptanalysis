@@ -18,15 +18,9 @@
     <ClCompile Include="LEDalgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XorProfileGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LEDalgorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XorProfileGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

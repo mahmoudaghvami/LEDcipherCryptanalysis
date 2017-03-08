@@ -147,11 +147,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LEDalgorithm.cpp" />
-    <ClCompile Include="XorProfileGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LEDalgorithm.h" />
-    <ClInclude Include="XorProfileGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
