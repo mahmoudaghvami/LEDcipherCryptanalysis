@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{73A91B6F-ECA6-4540-9136-325073717134}</ProjectGuid>
+    <ProjectGuid>{D5569E2C-54E5-458F-B0AC-41FEFEB30F8E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LEDcipherCryptanalysis</RootNamespace>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -146,12 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="LEDalgorithm.cpp" />
-    <ClCompile Include="XorProfileGenerator.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="LEDalgorithm.h" />
-    <ClInclude Include="XorProfileGenerator.h" />
+    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

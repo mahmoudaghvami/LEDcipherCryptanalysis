@@ -31,10 +31,7 @@ void AddKey(unsigned char state[4][4], unsigned char* keyBytes, int step)
 	int i, j;
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
-		{
-			state[i][j] ^= keyBytes[((4 * i) + j + (step * 16)) % (LED / 4)];
-		}
-			
+			state[i][j] ^= keyBytes[(4 * i + j + step * 16) % (LED / 4)];
 }
 
 void AddConstants(unsigned char state[4][4], int r) //RC = round constant
@@ -193,95 +190,58 @@ void LED_enc(unsigned char* input, const unsigned char* userkey, int ksbits)
 	}
 	LED = ksbits;
 	int Rounds;
-	Rounds = 4;
+	Rounds = 1;
 	//Rounds = 32;
 	//if(ksbits > 64)
 	//	Rounds = 48;
 
 	int j;
 	AddKey(state, keyNibbles, 0);
-	for (i = 0; i < Rounds / 4; i++)
+	/*for (i = 0; i < Rounds / 4; i++)
 	{
 		for (j = 0; j < 4; j++)
-		{
-			AddConstants(state, i * 4 + j);
+		{*/
+	/*		AddConstants(state, 0);
 			SubCell(state);
-			ShiftRow(state);
+			ShiftRow(state);*/
+	printf("\nalooo:\n");
+	for (int i = 0; i <4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			printf("%d\t", state[i][j]);
+		}
+		printf("\n");
+	}
 			MixColumn(state);
-		}
-		AddKey(state, keyNibbles, i + 1);
-	}
-
-	/*printf("\nalooo:\n");
-	for (int i = 0; i <4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			printf("%d\t", state[i][j]);
-		}
-		printf("\n");
-	}*/
-
-	for (i = 0; i < 8; i++)
-		input[i] = ((state[(2 * i) / 4][(2 * i) % 4] & 0xF) << 4) | (state[(2 * i + 1) / 4][(2 * i + 1) % 4] & 0xF);
-}
-
-
-void LED_dec(unsigned char* input, const unsigned char* userkey, int ksbits)
-{
-	unsigned char state[4][4];
-	unsigned char keyNibbles[32]; //hadaksar 128 bit key dashtim dige
-	int i;
-	for (i = 0; i < 16; i++) {
-		if (i % 2) state[i / 4][i % 4] = input[i >> 1] & 0xF;
-		else state[i / 4][i % 4] = (input[i >> 1] >> 4) & 0xF;
-	}
-	
-	memset(keyNibbles, 0, 32);//hame 32 ta niblle ra aval sefr mikone
-	for (i = 0; i < ksbits / 4; i++) {
-		if (i % 2) keyNibbles[i] = userkey[i >> 1] & 0xF;
-		else keyNibbles[i] = (userkey[i >> 1] >> 4) & 0xF;
-	}
-	LED = ksbits;
-	int Rounds;
-	Rounds = 4;
-	//Rounds = 32;
-	//if(ksbits > 64)
-	//	Rounds = 48;
-
-	int j;
-	AddKey(state, keyNibbles, 1);
-	for (i = (Rounds / 4)-1 ; i >=0 ; i--)
-	{
-		for (j = 3; j >=0; j--)
-		{
+			printf("\nalooo2:\n");
+			for (int i = 0; i <4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					printf("%d\t", state[i][j]);
+				}
+				printf("\n");
+			}
 			revMixColumn(state);
-			revShiftRow(state);
-			revSubCell(state);
-			AddConstants(state, i * 4 + j);
-		}
-		AddKey(state, keyNibbles,0);
-	}
 
-	/*printf("\nalooo2:\n");
-	for (int i = 0; i <4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			printf("%d\t", state[i][j]);
-		}
-		printf("\n");
-	}*/
 
-	for (i = 0; i < 8; i++)
-		input[i] = ((state[(2 * i) / 4][(2 * i) % 4] & 0xF) << 4) | (state[(2 * i + 1) / 4][(2 * i + 1) % 4] & 0xF);
+
+		//}
+		//AddKey(state, keyNibbles, i + 1);
+//		AddKey(state, keyNibbles, 1);
+	//}
+
+	/*for (i = 0; i < 8; i++)
+		input[i] = ((state[(2 * i) / 4][(2 * i) % 4] & 0xF) << 4) | (state[(2 * i + 1) / 4][(2 * i + 1) % 4] & 0xF);*/
 }
 
-void Random_generator(unsigned char *input, unsigned char *key,int kbits)
+
+void Random_generator(unsigned char *input, unsigned char *key, int kbits)
 {
-	srand((unsigned)time(0)); 
-	for(int i = 0; i < 8; i++)  input[i] = rand() & 0xff; 
-	for(int i = 0; i < kbits/8 ; i++)key[i] = rand() & 0xff;
+	srand((unsigned)time(0));
+	for (int i = 0; i < 8; i++)  input[i] = rand() & 0xff;
+	for (int i = 0; i < kbits / 8; i++)key[i] = rand() & 0xff;
 }
 
 int main(int argc, char*argv[])
@@ -294,10 +254,9 @@ int main(int argc, char*argv[])
 	//Random_generator(input,key,kbitso);
 	printf("Key = "); for (int i = 0; i < kbitso / 8; i++) printf("%02x", key[i]); printf("\n");
 	printf("Plain = "); for (int i = 0; i < 8; i++) printf("%02x", input[i]); printf("\n");
-	LED_enc(&input[0], &key[0], kbitso);
-	printf("Cipher = "); for (int i = 0; i < 8; i++) printf("%02x", input[i]); printf("\n\n");
-	LED_dec(&input[0], &key[0], kbitso);
-	printf("decrypted cipher = "); for (int i = 0; i < 8; i++) printf("%02x", input[i]); printf("\n\n");
+	LED_enc(&input[0], key, kbitso);
+	//printf("Cipher = "); for (int i = 0; i < 8; i++) printf("%02x", input[i]); printf("\n\n");
+	//GeneratXorProfile();
 	getchar();
 	return 0;
 }
